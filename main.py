@@ -24,12 +24,14 @@
 #     print(f"Call initiated successfully. Call SID: {call.sid}")
 # except Exception as e:
 #     print(f"Error while initiating call: {e}")
+
+
+
 from fastapi import FastAPI, Form, Response
 from twilio.twiml.voice_response import VoiceResponse
 
 app = FastAPI()
 
-# Ye endpoint call pe pehle call handle karega aur user se bolega kuch bolne ko
 @app.post("/voice")
 async def voice():
     resp = VoiceResponse()
@@ -44,7 +46,6 @@ async def voice():
     # resp.play("https://github.com/SwetTrivedi/twiliotask/raw/refs/heads/main/Recording%20(2).m4a")
     return Response(content=str(resp), media_type="application/xml")
 
-# Ye endpoint user ki boli hui baat lega aur uske hisaab se reply karega
 @app.post("/process")
 async def process(SpeechResult: str = Form("")):
     print("User said:", SpeechResult)
@@ -61,7 +62,7 @@ async def process(SpeechResult: str = Form("")):
     else:
         resp.say("माफ़ करें, मैं आपको समझ नहीं पाया। कृपया दोबारा बोलें।", language="hi-IN")
 
-    # Call ko wapas speech sunने के लिए phir se gather karna chahoge to yeh karo:
+
     gather = resp.gather(
         input="speech",
         action="/process",
